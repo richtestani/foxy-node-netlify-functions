@@ -32,7 +32,7 @@ function customOptions() {
 function getMessages() {
   return {
     insufficientInventory: process.env['FX_ERROR_INSUFFICIENT_INVENTORY'] || 'Insufficient inventory for these items:',
-    priceMismatch: process.env['FX_ERROR_PRICE_MISMATCH'] || 'Prices do not match. getOption('currency')',
+    priceMismatch: process.env['FX_ERROR_PRICE_MISMATCH'] || 'Prices do not match. ' + getOption('currency'),
   }
 }
 

@@ -153,7 +153,8 @@ function getCountryOrigin(data) {
     let body = JSON.parse(data);
     console.log( body['billing_country'] );
     let country = body['billing_country'];
-    customClientData = country.toLowerCase();
+    customClientData.country = country.toLowerCase();
+    console.log(customClientData);
 }
 
 function getCountryCurrency(items) {

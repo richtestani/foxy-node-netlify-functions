@@ -14,7 +14,7 @@ let weblowApi;
 * storefront
 */
 
-const currencyMap = {
+var currencyMap = {
     "usd" : process.env['PRICE_FIELD_USD'],
     "eur" : process.env['PRICE_FIELD_EUR'],
     "cad" : process.env['PRICE_FIELD_CAD'],
@@ -24,7 +24,7 @@ const currencyMap = {
     "gbp" : process.env['PRICE_FIELD_GBP']
 };
 
-const customClientData = {
+var customClientData = {
     country : "default",
     currency: "none"
 }

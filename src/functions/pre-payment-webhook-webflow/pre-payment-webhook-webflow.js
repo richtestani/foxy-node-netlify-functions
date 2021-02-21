@@ -151,7 +151,6 @@ function getOption(item, option) {
  */
 function getCountryOrigin(data) {
     let body = JSON.parse(data);
-    console.log( body['billing_country'] );
     let country = body['billing_country'];
     customClientData.country = country.toLowerCase();
     
@@ -160,8 +159,8 @@ function getCountryOrigin(data) {
 function getCountryCurrency(items) {
     console.log('fetching item currency');
     console.log(items);
-    console.log(item[0]);
-    let item = items[0];
+
+    let item = items;
     customClientData.currency = getOption(item, 'currency');
     console.log(customClientData);
 }

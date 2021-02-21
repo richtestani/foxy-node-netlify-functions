@@ -7,12 +7,35 @@ let weblowApi;
  *
  * @returns {{webflow: {limit: number}, skip: {price: *[], inventory: *[]}, fields: {code: (*|string), price: (*|string), inventory: (*|string)}}} custom options
  */
+
+/*
+* custom mapping of price fields to country
+* designed to handle situations where you have a mutli-currency
+* storefront
+*/
+
+const currencyMap = {
+    "usd" : process.env['PRICE_FIELD_USD'],
+    "eur" : process.env['PRICE_FIELD_EUR'],
+    "cad" : process.env['PRICE_FIELD_CAD'],
+    "gbc" : process.env['PRICE_FIELD_GBC'],
+    "mxn" : process.env['PRICE_FIELD_MXN'],
+    "aud" : process.env['PRICE_FIELD_AUD'],
+    "gbp" : process.env['PRICE_FIELD_GBP']
+};
+
+const customClientData = {
+    country : "default",
+    currency: "none"
+}
+
 function customOptions() {
   return {
     fields: {
       code: process.env['FX_FIELD_CODE'] || 'code',
       inventory: process.env['FX_FIELD_INVENTORY'] || 'inventory',
       price: process.env['FX_FIELD_PRICE'] || 'price'
+      //price: currencyMap[getOption('currency').value] || 'price'
     },
     skip: {
       inventory: (process.env['FX_SKIP_INVENTORY_CODES'] || '').split(',').map(e => e.trim()).filter(e => !!e) || [],
@@ -32,7 +55,7 @@ function customOptions() {
 function getMessages() {
   return {
     insufficientInventory: process.env['FX_ERROR_INSUFFICIENT_INVENTORY'] || 'Insufficient inventory for these items:',
-    priceMismatch: process.env['FX_ERROR_PRICE_MISMATCH'] || 'Prices do not match. ' + getOption('currency'),
+    priceMismatch: process.env['FX_ERROR_PRICE_MISMATCH'] || 'Prices do not match.' + customClientData.country,
   }
 }
 
@@ -57,6 +80,8 @@ async function handleRequest(event, context, callback) {
     callback(null, invalidItems);
     return;
   }
+  const country = getCountryOrigin(event.body);
+  const currency = getCountryCurrency(items);
   const values = [];
   const cache = createCache();
   // Fetch information needed to validate the cart
@@ -118,6 +143,21 @@ function getOption(item, option) {
     }
   }
   return {};
+}
+
+
+/**
+ * Designed for multi-currency stores
+ */
+function getCountryOrigin(data) {
+    let body = JSON.parse(data);
+    let country = body['fx:customer']['_embedded']['fx:default_billing_address']['country'];
+    customClientData = country.toLowerCase();
+}
+
+function getCountryCurrency(items) {
+    let item = items[0];
+    customClientData.currency = getOption(item, 'currency');
 }
 
 
@@ -214,6 +254,7 @@ function validItem(item) {
     errors.push(`${item.name} has no code.`)
   }
   const collection = getOption(item, 'collection_id').value;
+  
   if (!collection) {
     errors.push(`${item.name} has no collection_id.`)
   }

@@ -154,12 +154,13 @@ function getCountryOrigin(data) {
     console.log( body['billing_country'] );
     let country = body['billing_country'];
     customClientData.country = country.toLowerCase();
-    console.log(customClientData);
+    
 }
 
 function getCountryCurrency(items) {
     let item = items[0];
     customClientData.currency = getOption(item, 'currency');
+    console.log(customClientData);
 }
 
 

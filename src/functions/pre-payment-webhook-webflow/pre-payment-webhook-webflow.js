@@ -159,6 +159,7 @@ function getCountryOrigin(data) {
 function getCountryCurrency(items) {
     console.log('fetching item currency');
     console.log(items);
+    console.log(item._embedded['fx:item_options']);
 
     let item = items;
     customClientData.currency = getOption(item, 'currency');

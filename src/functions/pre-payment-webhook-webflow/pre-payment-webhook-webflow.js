@@ -151,6 +151,7 @@ function getOption(item, option) {
  */
 function getCountryOrigin(data) {
     let body = JSON.parse(data);
+    console.log(body);
     let country = body['fx:customer']['_embedded']['fx:default_billing_address']['country'];
     customClientData = country.toLowerCase();
 }

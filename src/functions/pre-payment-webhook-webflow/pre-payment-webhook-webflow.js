@@ -161,7 +161,7 @@ function getCountryCurrency(items) {
     //console.log(items._embedded['fx:item_options']);
 
     let item = items;
-    console.log(JSON.stringify(item._links));
+    console.log(JSON.stringify(item['_links']));
     let currency = getOption(item, 'currency');
     customClientData.currency = currency;
     console.log(customClientData);

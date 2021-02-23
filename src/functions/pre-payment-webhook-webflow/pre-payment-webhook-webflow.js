@@ -158,11 +158,10 @@ function getCountryOrigin(data) {
 
 function getCountryCurrency(items) {
     console.log('fetching item currency');
-    console.log(items['fx:item_options']);
     //console.log(items._embedded['fx:item_options']);
 
     let item = items;
-    console.log(item);
+    console.log(JSON.stringify(item));
     let currency = getOption(item, 'currency');
     customClientData.currency = currency;
     console.log(customClientData);

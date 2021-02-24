@@ -162,6 +162,11 @@ function getCountryCurrency(items) {
 
     let item = items;
     console.log(JSON.stringify(item));
+    Object.keys(item).forEach(function(key) {
+        var value = item[key];
+        console.log(key, value);
+        // ...
+    });
     let currency = getOption(item, 'currency');
     customClientData.currency = currency;
     console.log(customClientData);

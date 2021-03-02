@@ -162,6 +162,7 @@ function getCountryCurrency(items) {
 
     let item = items;
     console.log(JSON.stringify(item));
+    console.log(item[0]['_embedded']['fx:item_options']);
     Object.keys(item).forEach(function(key) {
         var value = item[key];
         console.log(key, value);

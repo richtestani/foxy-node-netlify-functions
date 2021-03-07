@@ -27,8 +27,23 @@ var currencyMap = {
 var customClientData = {
     country : "default",
     currency: "none",
-    priceField : ""
+    priceField : "",
+    language : "en"
 }
+
+var errorMessages = {
+  "en" : {
+    price : 'Prices do not match',
+    inventory : 'Insufficient inventory for these items:'
+  },
+  "es" : {
+
+  },
+  "den" : {
+
+  },
+
+};
 
 function customOptions() {
   return {
@@ -56,7 +71,7 @@ function customOptions() {
 function getMessages() {
   return {
     insufficientInventory: process.env['FX_ERROR_INSUFFICIENT_INVENTORY'] || 'Insufficient inventory for these items:',
-    priceMismatch: process.env['FX_ERROR_PRICE_MISMATCH'] || 'Prices do not match. Checking: ' + customClientData.priceField,
+    priceMismatch: process.env['FX_ERROR_PRICE_MISMATCH'] || 'Prices do not match. ',
   }
 }
 
@@ -158,8 +173,6 @@ function getCountryOrigin(data) {
 }
 
 function getCountryCurrency(items) {
-    console.log('fetching item currency');
-    //console.log(items._embedded['fx:item_options']);
 
     let item = items;
     var options = item[0]['_embedded']['fx:item_options'];
@@ -170,7 +183,7 @@ function getCountryCurrency(items) {
         }
         // ...
     });
-    console.log(customClientData);
+
 }
 
 
@@ -323,7 +336,7 @@ function isPriceCorrect(comparable) {
   ) {
     return true;
   } else {
-    console.log(fxItem.price, wfItem)
+    console.log(fxItem)
     let priceField = customClientData.priceField;
     return parseFloat(fxItem.price) === parseFloat(iGet(wfItem, getCustomKey(priceField)));
   }

@@ -33,8 +33,8 @@ var customClientData = {
 function customOptions() {
   return {
     fields: {
-      inventory: process.env['FX_FIELD_INVENTORY'] || 'inventory',
       code: process.env['FX_FIELD_CODE'] || 'code',
+      inventory: process.env['FX_FIELD_INVENTORY'] || 'inventory',
       price: currencyMap.priceField || 'price'
       //price: currencyMap[getOption('currency').value] || 'price'
     },
@@ -56,7 +56,7 @@ function customOptions() {
 function getMessages() {
   return {
     insufficientInventory: process.env['FX_ERROR_INSUFFICIENT_INVENTORY'] || 'Insufficient inventory for these items:',
-    priceMismatch: process.env['FX_ERROR_PRICE_MISMATCH'] || 'Prices do not match.' + customClientData.country,
+    priceMismatch: process.env['FX_ERROR_PRICE_MISMATCH'] || 'Prices do not match. Checking: ' + customClientData.priceField,
   }
 }
 
@@ -323,6 +323,7 @@ function isPriceCorrect(comparable) {
   ) {
     return true;
   } else {
+    console.log(fxItem.price, wfItem)
     return parseFloat(fxItem.price) === parseFloat(iGet(wfItem, getCustomKey('price')));
   }
 }

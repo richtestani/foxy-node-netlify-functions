@@ -26,7 +26,8 @@ var currencyMap = {
 
 var customClientData = {
     country : "default",
-    currency: "none"
+    currency: "none",
+    priceField : ""
 }
 
 function customOptions() {
@@ -34,7 +35,7 @@ function customOptions() {
     fields: {
       code: process.env['FX_FIELD_CODE'] || 'code',
       inventory: process.env['FX_FIELD_INVENTORY'] || 'inventory',
-      price: process.env['FX_FIELD_PRICE'] || 'price'
+      price: currencyMap.priceField || 'price'
       //price: currencyMap[getOption('currency').value] || 'price'
     },
     skip: {
@@ -161,15 +162,13 @@ function getCountryCurrency(items) {
     //console.log(items._embedded['fx:item_options']);
 
     let item = items;
-    console.log(JSON.stringify(item));
-    console.log(item[0]['_embedded']['fx:item_options']);
-    Object.keys(item).forEach(function(key) {
-        var value = item[key];
-        console.log(key, value);
+    var options = item[0]['_embedded']['fx:item_options'];
+    options.forEach(function(item) {
+        if(item.name == 'currency') {
+         customClientData.currency = currencyMap[item.value];
+        }
         // ...
     });
-    let currency = getOption(item, 'currency');
-    customClientData.currency = currency;
     console.log(customClientData);
 }
 

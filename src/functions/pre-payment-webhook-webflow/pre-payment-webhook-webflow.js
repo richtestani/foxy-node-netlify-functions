@@ -33,8 +33,8 @@ var customClientData = {
 function customOptions() {
   return {
     fields: {
-      code: process.env['FX_FIELD_CODE'] || 'code',
       inventory: process.env['FX_FIELD_INVENTORY'] || 'inventory',
+      code: process.env['FX_FIELD_CODE'] || 'code',
       price: currencyMap.priceField || 'price'
       //price: currencyMap[getOption('currency').value] || 'price'
     },
@@ -165,7 +165,8 @@ function getCountryCurrency(items) {
     var options = item[0]['_embedded']['fx:item_options'];
     options.forEach(function(item) {
         if(item.name == 'currency') {
-         customClientData.currency = currencyMap[item.value];
+         customClientData.currency = item.value;
+         customClientData.priceField = currencyMap[item.value]
         }
         // ...
     });

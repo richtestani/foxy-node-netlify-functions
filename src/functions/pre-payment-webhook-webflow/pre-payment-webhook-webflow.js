@@ -51,7 +51,6 @@ function customOptions() {
       code: process.env['FX_FIELD_CODE'] || 'code',
       inventory: process.env['FX_FIELD_INVENTORY'] || 'inventory',
       price: currencyMap.priceField || 'price'
-      //price: currencyMap[getOption('currency').value] || 'price'
     },
     skip: {
       inventory: (process.env['FX_SKIP_INVENTORY_CODES'] || '').split(',').map(e => e.trim()).filter(e => !!e) || [],
@@ -330,13 +329,14 @@ const validation = {
 function isPriceCorrect(comparable) {
   const wfItem = comparable.wfItem;
   const fxItem = comparable.fxItem;
+  console.log(wfItem);
   if (
     !fxItem // an item with no matched item is not to be checked
     || customOptions().skip.price.indexOf(iGet(wfItem, getCustomKey('code'))) >=0 //  items with price set to be skipped are not to be checked
   ) {
     return true;
   } else {
-    console.log(fxItem)
+    
     let priceField = customClientData.priceField;
     return parseFloat(fxItem.price) === parseFloat(iGet(wfItem, getCustomKey(priceField)));
   }
@@ -479,7 +479,6 @@ function fetchItem(cache, foxyItem, offset = 0) {
         }
       }
     }).catch((e) => {
-      console.log(e);
       reject(e);
     });
   });
